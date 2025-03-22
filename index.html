@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Un mensaje especial</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            font-family: Arial, sans-serif;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+        .container {
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2;
+        }
+        .hidden-message {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease, transform 1s ease;
+            font-size: 18px;
+        }
+        .show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        button {
+            background: white;
+            color: #ff4a6e;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background: #ff4a6e;
+            color: white;
+        }
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: red;
+            opacity: 0.8;
+            animation: floatUp 3s linear infinite;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-200px) scale(1.5); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Ni hao 😊</h2>
+        <p>Solo quería compartirte algo especial...</p>
+        <button onclick="mostrarMensaje()">Haz clic aquí</button>
+        <p id="mensaje1" class="hidden-message"></p>
+        <p id="mensaje2" class="hidden-message"></p>
+        <p id="mensaje3" class="hidden-message"></p>
+        <audio id="music" src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" preload="auto"></audio>
+    </div>
+    <script>
+        const mensajes = [
+            "Desde que volvimos a hablar, me he dado cuenta de que sigues siendo alguien muy especial para mí. 💖",
+            "Cada vez que tengo la oportunidad de verte en la escuela, aunque no lo parezca, me alegra el día. 🌸",
+            "Solo quería que supieras lo importante que eres para mí. ❤️"
+        ];
+        let index = 0;
+        
+        function mostrarMensaje() {
+            if (index < mensajes.length) {
+                escribirTexto(mensajes[index], `mensaje${index + 1}`);
+                index++;
+                setTimeout(mostrarMensaje, 3000);
+            }
+            lanzarCorazones();
+            document.getElementById("music").play();
+        }
+        
+        function escribirTexto(texto, elementoId) {
+            let i = 0;
+            const elemento = document.getElementById(elementoId);
+            elemento.classList.add("show");
+            elemento.textContent = "";
+            
+            function escribir() {
+                if (i < texto.length) {
+                    elemento.textContent += texto[i];
+                    i++;
+                    setTimeout(escribir, 50);
+                }
+            }
+            escribir();
+        }
+        
+        function lanzarCorazones() {
+            for (let i = 0; i < 15; i++) {
+                let corazon = document.createElement("div");
+                corazon.classList.add("heart");
+                corazon.innerHTML = "❤️";
+                corazon.style.left = Math.random() * window.innerWidth + "px";
+                corazon.style.top = window.innerHeight + "px";
+                document.body.appendChild(corazon);
+                setTimeout(() => corazon.remove(), 3000);
+            }
+        }
+    </script>
+</body>
+</html>
